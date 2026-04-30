@@ -74,8 +74,15 @@
                                         <%= dateFormat(produtos[index].criadoEm, {}, 'pt-BR' , true) %>
                                     </td>
                                     <td>
-                                        <a href="produtos/<%= produtos[index].id %>/editar" class="text-warning mr-1">
+                                        <a href="/produtos/<%= produtos[index].id %>/editar" class="text-warning mr-1">
                                             <i class="fa fa-pencil fa-lg"></i>
+                                        </a>
+                                        <a href="/produtos/<%= produtos[index].id %>/excluir" class ="text-danger">
+                                            <i class="fa fa-trash fa-lg"></i>
+                                        </a>
+
+                                        <a href="#" class="text-secondary remover" data-name="<%= produtos[index].nome %>" data-id="<%= produtos[index].id %>">
+                                            <i class="fa fa-trash fa-lg"></i>
                                         </a>
                                     </td>
                                 </tr>

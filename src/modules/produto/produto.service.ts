@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Produto } from "./produto.entity";
+import { CreateProdutoDto } from "./dtos/create-produto.dto";
+import { UpdateProdutoDto } from "./dtos/update-produto.dto";
 
 @Injectable()
 export class ProdutoService {
@@ -22,23 +24,21 @@ export class ProdutoService {
         });
     }
 
-    async create(dados: any): Promise<Produto> {
-        const preco = dados.preco.replace('.', '').replace(',', '.');
+    async create(dados: CreateProdutoDto): Promise<Produto> {
 
-        const produto = Produto.create({ ...dados, preco });
+        const produto = Produto.create({ ...dados });
 
         return produto.save();
     }
 
-    async update(id: number, dados: any): Promise<Produto | null> {
+    async update(id: number, dados: UpdateProdutoDto): Promise<Produto | null> {
         const produto = await this.findOne(id);
 
         if (!produto) {
             return null;
         }
 
-        const preco = dados.preco.replace('.', '').replace(',', '.')
-        Object.assign(produto, { ...dados, preco });
+        Object.assign(produto, { ...dados });
 
         return produto.save();
     }

@@ -1,5 +1,8 @@
 import { Body, Controller, Get, Post, Redirect, Render, Param, HttpCode } from "@nestjs/common";
 import { ProdutoService } from "./produto.service";
+import { ValidationView, toBoolean } from 'nest-validation-view';
+import { CreateProdutoDto } from "./dtos/create-produto.dto";
+import { UpdateProdutoDto } from "./dtos/update-produto.dto";
 
 @Controller('produtos')
 export class ProdutoController {
@@ -26,7 +29,13 @@ export class ProdutoController {
 
     @Post('criar')
     @Redirect('/produtos')
-    async formularioCriarSalvar(@Body() dados: any): Promise<void> {
+    @ValidationView('produto/formulario', ({ request, errors }) => ({
+        produto: {
+            ...request.body // Obtém todas as chaves do JSON
+        },
+        errors,
+    }))
+    async formularioCriarSalvar(@Body() dados: CreateProdutoDto): Promise<void> {
         await this.produtoService.create(dados);
     }
 
@@ -35,7 +44,7 @@ export class ProdutoController {
     async formEditar(@Param('id') id: number): Promise<object> {
         const produto = await this.produtoService.findOne(id);
 
-        if(!produto) {
+        if (!produto) {
             throw new Error('Produto não encontrado!');
         }
 
@@ -48,7 +57,14 @@ export class ProdutoController {
 
     @Post(':id/editar')
     @Redirect('/produtos')
-    async formEditarSalvar(@Param('id') id: number, @Body() dados: any): Promise<void>{
+    @ValidationView('produto/formulario', ({ request, errors }) => ({
+        produto: {
+            id: request.params.id,
+            ...request.body
+        },
+        errors,
+    }))
+    async formEditarSalvar(@Param('id') id: number, @Body() dados: UpdateProdutoDto): Promise<void> {
         await this.produtoService.update(id, dados);
     }
 
@@ -57,7 +73,7 @@ export class ProdutoController {
     async formExcluir(@Param('id') id: number): Promise<object> {
         const produto = await this.produtoService.findOne(id);
 
-        if(!produto) {
+        if (!produto) {
             throw new Error('Produto não encontrado!');
         }
 
@@ -70,13 +86,13 @@ export class ProdutoController {
 
     @Post(':id/excluir')
     @Redirect('/produtos')
-    async formExcluirSalvar(@Param('id') id: number): Promise<void>{
+    async formExcluirSalvar(@Param('id') id: number): Promise<void> {
         await this.produtoService.remove(id);
     }
 
     @Post(':id/remover')
     @HttpCode(204)
-    async remove(@Param('id') id: number): Promise<void>{
+    async remove(@Param('id') id: number): Promise<void> {
         await this.produtoService.remove(id);
     }
 }

@@ -20,18 +20,22 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <div class="basic-form">
+                <div class="basic-form flex-grow-1">
                     <form>
                         <div class="form-row">
                             <div class="col-lg-10">
                                 <input type="text" class="form-control" placeholder="Digite para pesquisar...">
                             </div>
                             <div class="col-lg-2 mt-2 mt-lg-0">
-                                <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+                                <button type="submit" class="btn btn-warning mb-2">Pesquisar</button>
                             </div>
                         </div>
                     </form>
                 </div>
+
+                <a href="/produtos/criar" class="btn btn-primary mb-2">
+                    Adicionar Novo Produto
+                </a>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -77,11 +81,12 @@
                                         <a href="/produtos/<%= produtos[index].id %>/editar" class="text-warning mr-1">
                                             <i class="fa fa-pencil fa-lg"></i>
                                         </a>
-                                        <a href="/produtos/<%= produtos[index].id %>/excluir" class ="text-danger">
+                                        <a href="/produtos/<%= produtos[index].id %>/excluir" class="text-danger">
                                             <i class="fa fa-trash fa-lg"></i>
                                         </a>
 
-                                        <a href="#" class="text-secondary remover" data-name="<%= produtos[index].nome %>" data-id="<%= produtos[index].id %>">
+                                        <a href="#" class="text-secondary remover"
+                                            data-name="<%= produtos[index].nome %>" data-id="<%= produtos[index].id %>">
                                             <i class="fa fa-trash fa-lg"></i>
                                         </a>
                                     </td>
